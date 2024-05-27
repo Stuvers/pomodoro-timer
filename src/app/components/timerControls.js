@@ -1,17 +1,18 @@
+import { useState } from "react";
+
 function formatTimeUnit(unit) {
     return String(unit).length === 1 ? `0${unit}` : String(unit);
 }
 
-const runTimer = (timerText, setTimerText) => {   
+const runTimer = (timerText, setTimerText, setTimeoutId) => {   
     const timeUnits = String(timerText).split(":");
-    console.log("top" + timeUnits); 
 
     let thisHour = Number(timeUnits[0]);
     let thisMin = Number(timeUnits[1]);
     let thisSec = Number(timeUnits[2]);
     let thisRunning = true;
 
-    setInterval(() => {
+    setTimeoutId(setInterval(() => {
 
         if (thisSec === 0) {                
             if (thisMin >= 1) {     
@@ -36,19 +37,23 @@ const runTimer = (timerText, setTimerText) => {
             clearInterval();
         }
 
-        console.log(`Bottom: ${thisHour}:${thisMin}:${thisSec}`);
         setTimerText(`${formatTimeUnit(thisHour)}:${formatTimeUnit(thisMin)}:${formatTimeUnit(thisSec)}`);            
-    }, 1000, thisSec, thisMin, thisHour, setTimerText);
+    }, 1000, thisSec, thisMin, thisHour, setTimerText));
 
     thisRunning = false;
 };
 
 const TimerControls = (props) => {             
 
+    const [timeoutId, setTimeoutId] = useState(0);
+
     return (
         <>
-        <button onClick={() => runTimer(props.timerText, props.setTimerText) }>
+        <button onClick={() => runTimer(props.timerText, props.setTimerText, setTimeoutId) }>
             Start Pomodoro
+        </button>
+        <button onClick={() => { clearInterval(timeoutId); console.log(timeoutId); } }>
+            Pause Pomodoro
         </button>
         </>
     );

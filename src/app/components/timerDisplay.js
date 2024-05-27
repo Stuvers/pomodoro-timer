@@ -7,6 +7,7 @@ import styles from "./timerDisplay.module.css";
 const TimerDisplay = () => {
      
     const [timerText, setTimerText] = useState("00:25:00");
+    const [isRunning, setRunning] = useState(false);
 
     const handleUserInputChange = (e) => {
         console.log("OnChange:" + e.target.value);
@@ -24,8 +25,8 @@ const TimerDisplay = () => {
             <label className={styles.controlLabel}> 
                 Short Break Time: <input className={styles.controlTextBox} type="text" defaultValue="00:05:00" />
             </label>  
-            <TimerControls timerText={timerText} setTimerText={setTimerText} />
         </form>
+        <TimerControls timerText={timerText} setTimerText={setTimerText} isRunning={isRunning} setRunning={setRunning} />
         </div>
     );
 }
